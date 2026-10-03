@@ -14,7 +14,10 @@
             <p class="eyebrow">Bakery</p>
             <h1 id="bakery-title">Cookie Clicker Clone</h1>
           </div>
-          <button id="reset-button" class="ghost-button" type="button">Reset</button>
+          <div class="top-actions">
+            <button id="sound-button" class="ghost-button" type="button" aria-pressed="false">Sound Off</button>
+            <button id="reset-button" class="ghost-button" type="button">Reset</button>
+          </div>
         </div>
 
         <div class="cookie-stage">
@@ -47,6 +50,22 @@
           <span class="stat-label">Autosave</span>
           <strong id="save-state" class="stat-value">Ready</strong>
         </section>
+        <section class="stat-card">
+          <span class="stat-label">Lifetime Cookies</span>
+          <strong id="lifetime-cookies" class="stat-value">0</strong>
+        </section>
+        <section class="stat-card">
+          <span class="stat-label">Manual Clicks</span>
+          <strong id="manual-clicks" class="stat-value">0</strong>
+        </section>
+        <section class="stat-card">
+          <span class="stat-label">Buildings Owned</span>
+          <strong id="buildings-owned" class="stat-value">0</strong>
+        </section>
+        <section class="stat-card">
+          <span class="stat-label">Upgrades Bought</span>
+          <strong id="upgrades-bought" class="stat-value">0</strong>
+        </section>
       </aside>
 
       <aside class="shop-panel" aria-label="Bakery shop">
@@ -72,6 +91,14 @@
           </div>
         </details>
       </aside>
+
+      <section class="achievement-panel" aria-labelledby="achievements-title">
+        <div class="section-heading">
+          <p class="eyebrow">Achievements</p>
+          <h2 id="achievements-title">Bakery Brag Shelf</h2>
+        </div>
+        <div id="achievement-list" class="achievement-list"></div>
+      </section>
     </main>
 
     <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>

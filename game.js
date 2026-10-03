@@ -3,6 +3,7 @@
 
   const STORAGE_KEY = "cookie-clicker-clone-bakery-v1";
   const SAVE_INTERVAL_MS = 2000;
+  const OFFLINE_CAP_MS = 8 * 60 * 60 * 1000;
 
   const buildings = [
     { id: "cursor", name: "Cursor", copy: "A dutiful pointer with buttery ambition.", baseCost: 15, production: 0.1 },
@@ -23,6 +24,17 @@
     { id: "bakery-ledger", name: "Crumb Ledger", copy: "All Cookie Production rises by 15%.", cost: 18000, unlock: (bakery) => bakery.lifetimeCookies >= 10000, globalMultiplier: 1.15 }
   ];
 
+  const achievements = [
+    { id: "first-click", name: "First Crumb", copy: "Click the Cookie once.", earned: (bakery) => bakery.manualClicks >= 1 },
+    { id: "click-100", name: "Finger Warmup", copy: "Click the Cookie 100 times.", earned: (bakery) => bakery.manualClicks >= 100 },
+    { id: "cookies-100", name: "Snack Stack", copy: "Bake 100 lifetime Cookies.", earned: (bakery) => bakery.lifetimeCookies >= 100 },
+    { id: "cookies-10000", name: "Jar With Ambition", copy: "Bake 10,000 lifetime Cookies.", earned: (bakery) => bakery.lifetimeCookies >= 10000 },
+    { id: "building-1", name: "Help Arrives", copy: "Own any Building.", earned: (bakery) => totalBuildingsOwned(bakery) >= 1 },
+    { id: "building-25", name: "Busy Counter", copy: "Own 25 Buildings.", earned: (bakery) => totalBuildingsOwned(bakery) >= 25 },
+    { id: "upgrade-1", name: "Recipe Notes", copy: "Buy an Upgrade.", earned: (bakery) => bakery.purchasedUpgrades.length >= 1 },
+    { id: "production-100", name: "Cookie Weather", copy: "Reach 100 Cookie Production.", earned: (bakery) => bakery.cookieProduction >= 100 }
+  ];
+
   const defaultBakery = {
     cookies: 0,
     lifetimeCookies: 0,
@@ -33,6 +45,8 @@
     purchasedUpgrades: [],
     buildingMultipliers: {},
     globalMultiplier: 1,
+    earnedAchievements: [],
+    soundEnabled: false,
     lastSavedAt: Date.now()
   };
 
@@ -47,12 +61,19 @@
     toastRegion: document.getElementById("toast-region"),
     buildingList: document.getElementById("building-list"),
     upgradeList: document.getElementById("upgrade-list"),
-    upgradeHint: document.getElementById("upgrade-hint")
+    upgradeHint: document.getElementById("upgrade-hint"),
+    lifetimeCookies: document.getElementById("lifetime-cookies"),
+    manualClicks: document.getElementById("manual-clicks"),
+    buildingsOwned: document.getElementById("buildings-owned"),
+    upgradesBought: document.getElementById("upgrades-bought"),
+    achievementList: document.getElementById("achievement-list"),
+    soundButton: document.getElementById("sound-button")
   };
 
   let bakery = loadBakery();
   let lastTick = performance.now();
   let feedbackTimer = 0;
+  let audioContext = null;
 
   function cloneDefaultBakery() {
     return {
@@ -84,7 +105,9 @@
         buildings: { ...fallback.buildings, ...(parsed.buildings || {}) },
         purchasedUpgrades: Array.isArray(parsed.purchasedUpgrades) ? parsed.purchasedUpgrades : [],
         buildingMultipliers: { ...fallback.buildingMultipliers, ...(parsed.buildingMultipliers || {}) },
-        globalMultiplier: Math.max(1, Number(parsed.globalMultiplier) || 1)
+        globalMultiplier: Math.max(1, Number(parsed.globalMultiplier) || 1),
+        earnedAchievements: Array.isArray(parsed.earnedAchievements) ? parsed.earnedAchievements : [],
+        soundEnabled: Boolean(parsed.soundEnabled)
       };
     } catch (error) {
       console.warn("Saved bakery could not be loaded.", error);
@@ -138,6 +161,10 @@
     return baseProduction * bakery.globalMultiplier;
   }
 
+  function totalBuildingsOwned(targetBakery = bakery) {
+    return buildings.reduce((total, building) => total + (targetBakery.buildings[building.id] || 0), 0);
+  }
+
   function spendCookies(cost) {
     if (bakery.cookies < cost) {
       return false;
@@ -151,6 +178,7 @@
     addCookies(bakery.clickPower);
     bakery.manualClicks += 1;
     showClickFeedback(`+${formatNumber(bakery.clickPower)} cookie`);
+    playTone(260, 0.04, "sine");
     elements.cookieButton.classList.add("is-pressed");
     window.setTimeout(() => elements.cookieButton.classList.remove("is-pressed"), 100);
     render();
@@ -174,6 +202,7 @@
     render();
     saveBakery();
     showToast(`${building.name} joined the Bakery.`);
+    playTone(180, 0.08, "triangle");
   }
 
   function buyUpgrade(upgradeId) {
@@ -201,6 +230,66 @@
     render();
     saveBakery();
     showToast(`${upgrade.name} purchased.`);
+    playTone(420, 0.1, "square");
+  }
+
+  function applyOfflineProgress() {
+    const elapsedMs = Date.now() - (Number(bakery.lastSavedAt) || Date.now());
+    if (elapsedMs < 60000 || bakery.cookieProduction <= 0) {
+      return;
+    }
+
+    const cappedMs = Math.min(elapsedMs, OFFLINE_CAP_MS);
+    const earned = bakery.cookieProduction * (cappedMs / 1000);
+    addCookies(earned);
+    showToast(`While away for ${formatDuration(cappedMs)}, the Bakery made ${formatNumber(earned)} Cookies.`);
+  }
+
+  function formatDuration(ms) {
+    const minutes = Math.max(1, Math.floor(ms / 60000));
+    if (minutes < 60) {
+      return `${minutes} min`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes ? `${hours} hr ${remainingMinutes} min` : `${hours} hr`;
+  }
+
+  function toggleSound() {
+    bakery.soundEnabled = !bakery.soundEnabled;
+    renderSoundButton();
+    saveBakery();
+    if (bakery.soundEnabled) {
+      playTone(520, 0.08, "sine");
+      showToast("Sound on. The Cookie hums approvingly.");
+    } else {
+      showToast("Sound off. Quiet crumbs only.");
+    }
+  }
+
+  function playTone(frequency, duration, type) {
+    if (!bakery.soundEnabled) {
+      return;
+    }
+
+    const AudioCtor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtor) {
+      return;
+    }
+
+    audioContext = audioContext || new AudioCtor();
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    oscillator.type = type;
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0.001, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.08, audioContext.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + duration + 0.01);
   }
 
   function showClickFeedback(message) {
@@ -248,8 +337,15 @@
     elements.cookieTotal.textContent = formatNumber(bakery.cookies);
     elements.clickPower.textContent = formatNumber(bakery.clickPower);
     elements.cookieProduction.textContent = formatRate(bakery.cookieProduction);
+    elements.lifetimeCookies.textContent = formatNumber(bakery.lifetimeCookies);
+    elements.manualClicks.textContent = formatNumber(bakery.manualClicks);
+    elements.buildingsOwned.textContent = formatNumber(totalBuildingsOwned());
+    elements.upgradesBought.textContent = formatNumber(bakery.purchasedUpgrades.length);
     renderBuildings();
     renderUpgrades();
+    renderAchievements();
+    renderSoundButton();
+    checkAchievements();
   }
 
   function renderBuildings() {
@@ -316,12 +412,50 @@
     }));
   }
 
+  function renderAchievements(newAchievementId = "") {
+    elements.achievementList.replaceChildren(...achievements.map((achievement) => {
+      const earned = bakery.earnedAchievements.includes(achievement.id);
+      const badge = document.createElement("article");
+      badge.className = `achievement-badge${earned ? " is-earned" : ""}${achievement.id === newAchievementId ? " is-new" : ""}`;
+      badge.innerHTML = `
+        <span class="achievement-name">${earned ? achievement.name : "???"}</span>
+        <span class="achievement-copy">${earned ? achievement.copy : "Keep baking to discover this one."}</span>
+      `;
+      return badge;
+    }));
+  }
+
+  function checkAchievements() {
+    const newlyEarned = achievements.filter((achievement) => {
+      return !bakery.earnedAchievements.includes(achievement.id) && achievement.earned(bakery);
+    });
+
+    if (!newlyEarned.length) {
+      return;
+    }
+
+    for (const achievement of newlyEarned) {
+      bakery.earnedAchievements.push(achievement.id);
+      showToast(`Achievement unlocked: ${achievement.name}`);
+      renderAchievements(achievement.id);
+    }
+    saveBakery();
+  }
+
+  function renderSoundButton() {
+    elements.soundButton.textContent = bakery.soundEnabled ? "Sound On" : "Sound Off";
+    elements.soundButton.setAttribute("aria-pressed", String(bakery.soundEnabled));
+  }
+
   elements.cookieButton.addEventListener("click", bakeCookie);
   elements.resetButton.addEventListener("click", resetBakery);
+  elements.soundButton.addEventListener("click", toggleSound);
 
   window.addEventListener("beforeunload", saveBakery);
   window.setInterval(saveBakery, SAVE_INTERVAL_MS);
 
+  bakery.cookieProduction = calculateCookieProduction();
+  applyOfflineProgress();
   render();
   showToast("Oven warm. Cookie ready.");
   window.requestAnimationFrame(tick);

@@ -12,9 +12,9 @@ python3 -m http.server 51913 --bind 127.0.0.1
 
 Then visit `http://127.0.0.1:51913/`.
 
-## Current Slice
+## Current Game
 
-Slice 1 provides the playable spine:
+The complete MVP provides:
 
 - Big clickable Cookie
 - Cookie total
@@ -22,3 +22,9 @@ Slice 1 provides the playable spine:
 - Cookie Production engine
 - Autosave
 - Reset control
+- Eight-Building shop
+- Unlockable Upgrades
+- Achievements
+- Medium-depth stats
+- 8-hour capped Offline Progress
+- Muted-by-default audio toggle
