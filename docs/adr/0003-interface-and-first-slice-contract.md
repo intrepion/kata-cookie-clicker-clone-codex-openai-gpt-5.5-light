@@ -1,6 +1,6 @@
 # Interface and First Slice Contract
 
-The game will use invisible autosave with a visible reset control, compact suffix number formatting, visible-but-disabled unaffordable shop items, a small return toast for Offline Progress, and muted-by-default audio with a visible sound toggle. The first implementation slice is complete only when the static `index.html`, `style.css`, and `game.js` provide a big clickable Cookie, Cookie total, Click Power, a passive Cookie Production engine even if production is still zero, autosave, reset, direct `file://` browser smoke coverage, console-clean verification, and a pushed commit.
+The game will use invisible autosave with a visible reset control, compact suffix number formatting, visible-but-disabled unaffordable shop items, a small return toast for Offline Progress, and muted-by-default audio with a visible sound toggle. The first implementation slice is complete only when the static `index.html`, `styles.css`, and `game.js` provide a big clickable Cookie, Cookie total, Click Power, a passive Cookie Production engine even if production is still zero, autosave, reset, direct `file://` browser smoke coverage, console-clean verification, and a pushed commit.
 
 ## Considered Options
 

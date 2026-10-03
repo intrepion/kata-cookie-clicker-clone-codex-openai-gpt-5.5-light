@@ -72,6 +72,7 @@
 
   let bakery = loadBakery();
   let lastTick = performance.now();
+  let lastPassiveRender = 0;
   let feedbackTimer = 0;
   let audioContext = null;
 
@@ -314,7 +315,10 @@
 
     if (bakery.cookieProduction > 0) {
       addCookies(bakery.cookieProduction * elapsedSeconds);
-      render();
+      if (now - lastPassiveRender > 250) {
+        lastPassiveRender = now;
+        render();
+      }
     }
 
     window.requestAnimationFrame(tick);
