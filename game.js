@@ -141,6 +141,10 @@
   }
 
   function formatRate(value) {
+    if (value > 0 && value < 10) {
+      return `${Number(value.toFixed(2)).toLocaleString()}/sec`;
+    }
+
     return `${formatNumber(value)}/sec`;
   }
 
