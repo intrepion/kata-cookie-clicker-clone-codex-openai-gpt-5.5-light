@@ -34,13 +34,14 @@ button {
 .game-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 320px) minmax(280px, 360px);
   gap: 24px;
   padding: 24px;
 }
 
 .bakery-panel,
-.status-panel {
+.status-panel,
+.shop-panel {
   border: 1px solid var(--line);
   background: var(--panel);
   box-shadow: 0 20px 60px var(--shadow);
@@ -169,6 +170,95 @@ h1 {
   padding: 18px;
 }
 
+.shop-panel {
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  border-radius: 8px;
+}
+
+.mobile-shop {
+  height: 100%;
+}
+
+.mobile-shop > summary {
+  display: none;
+}
+
+.shop-content {
+  display: grid;
+  gap: 22px;
+  padding: 18px;
+}
+
+.shop-section {
+  display: grid;
+  gap: 12px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.1;
+}
+
+.item-list {
+  display: grid;
+  gap: 10px;
+}
+
+.shop-item {
+  width: 100%;
+  min-height: 104px;
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--ink);
+  background: var(--panel-strong);
+  text-align: left;
+  cursor: pointer;
+}
+
+.shop-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.66;
+}
+
+.shop-item:not(:disabled):hover,
+.shop-item:not(:disabled):focus-visible {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 10px 24px var(--shadow);
+}
+
+.item-topline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.item-name {
+  font-weight: 900;
+}
+
+.item-count,
+.item-cost,
+.item-status,
+.item-copy,
+.shop-hint {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.item-status {
+  color: var(--accent-dark);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .stat-card {
   min-height: 108px;
   display: grid;
@@ -226,6 +316,23 @@ h1 {
 
   .status-panel {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shop-panel {
+    position: sticky;
+    bottom: 0;
+    max-height: 68vh;
+    z-index: 5;
+  }
+
+  .mobile-shop > summary {
+    min-height: 52px;
+    display: grid;
+    align-items: center;
+    padding: 0 18px;
+    color: var(--accent-dark);
+    font-weight: 900;
+    cursor: pointer;
   }
 
   .cookie-stage {

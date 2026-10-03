@@ -48,6 +48,30 @@
           <strong id="save-state" class="stat-value">Ready</strong>
         </section>
       </aside>
+
+      <aside class="shop-panel" aria-label="Bakery shop">
+        <details class="mobile-shop" open>
+          <summary>Shop</summary>
+          <div class="shop-content">
+            <section class="shop-section" aria-labelledby="buildings-title">
+              <div class="section-heading">
+                <p class="eyebrow">Buildings</p>
+                <h2 id="buildings-title">Grow the Bakery</h2>
+              </div>
+              <div id="building-list" class="item-list"></div>
+            </section>
+
+            <section class="shop-section" aria-labelledby="upgrades-title">
+              <div class="section-heading">
+                <p class="eyebrow">Upgrades</p>
+                <h2 id="upgrades-title">Sharpen the Recipe</h2>
+              </div>
+              <p id="upgrade-hint" class="shop-hint">Upgrades appear when the Bakery smells ready.</p>
+              <div id="upgrade-list" class="item-list"></div>
+            </section>
+          </div>
+        </details>
+      </aside>
     </main>
 
     <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
