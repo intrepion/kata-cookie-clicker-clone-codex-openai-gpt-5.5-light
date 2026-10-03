@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cookie Clicker Clone</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="bakery-panel" aria-labelledby="bakery-title">
+        <div class="top-bar">
+          <div>
+            <p class="eyebrow">Bakery</p>
+            <h1 id="bakery-title">Cookie Clicker Clone</h1>
+          </div>
+          <button id="reset-button" class="ghost-button" type="button">Reset</button>
+        </div>
+
+        <div class="cookie-stage">
+          <button id="cookie-button" class="cookie-button" type="button" aria-label="Bake one cookie">
+            <span class="cookie-shine"></span>
+            <span class="chip chip-a"></span>
+            <span class="chip chip-b"></span>
+            <span class="chip chip-c"></span>
+            <span class="chip chip-d"></span>
+            <span class="chip chip-e"></span>
+          </button>
+          <p id="click-feedback" class="click-feedback" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <aside class="status-panel" aria-label="Bakery status">
+        <section class="stat-card">
+          <span class="stat-label">Cookies</span>
+          <strong id="cookie-total" class="stat-value">0</strong>
+        </section>
+        <section class="stat-card">
+          <span class="stat-label">Click Power</span>
+          <strong id="click-power" class="stat-value">1</strong>
+        </section>
+        <section class="stat-card">
+          <span class="stat-label">Cookie Production</span>
+          <strong id="cookie-production" class="stat-value">0/sec</strong>
+        </section>
+        <section class="stat-card">
+          <span class="stat-label">Autosave</span>
+          <strong id="save-state" class="stat-value">Ready</strong>
+        </section>
+      </aside>
+    </main>
+
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <script src="./game.js" defer></script>
+  </body>
+</html>
