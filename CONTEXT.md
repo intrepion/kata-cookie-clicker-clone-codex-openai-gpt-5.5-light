@@ -24,6 +24,10 @@ _Avoid_: Tap strength, click value, manual income
 A repeatable purchase that increases Cookie Production.
 _Avoid_: Generator, unit, producer
 
+**Building Ladder**:
+The ordered roster of Buildings available in the shop, starting with Cursor and growing into larger cookie-making institutions.
+_Avoid_: Tech tree, unit list, shop list
+
 **Upgrade**:
 A one-time purchase that improves Click Power, Buildings, or Cookie Production.
 _Avoid_: Perk, boost, power-up
@@ -32,6 +36,14 @@ _Avoid_: Perk, boost, power-up
 A milestone badge earned by reaching a meaningful Bakery state.
 _Avoid_: Trophy, medal, quest
 
+**Milestone**:
+A measurable Bakery state that can unlock an Achievement, such as total Cookies, manual clicks, Buildings owned, or Upgrades bought.
+_Avoid_: Goal, quest objective, task
+
 **Offline Progress**:
 Cookies awarded for elapsed time while the game was closed, based on the saved Bakery state.
 _Avoid_: Background simulation, away earnings
+
+**Homage Tone**:
+The game's lightly absurd bakery voice: playful enough to feel alive, but clear enough that mechanics remain readable.
+_Avoid_: Cozy-only tone, parody-first tone, random humor
