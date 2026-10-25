@@ -1,5 +1,9 @@
 # Cookie Clicker Clone
 
+## Play online
+
+[Play Cookie Clicker Clone](https://intrepion.github.io/kata-cookie-clicker-clone-codex-openai-gpt-5.5-light/) — free, playable in your browser.
+
 A dependency-free Cookie Clicker-style browser game built in committed MVP slices.
 
 ## Run
