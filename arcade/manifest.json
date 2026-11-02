@@ -1,6 +1,47 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "gameId": "kata-cookie-clicker-clone-codex-openai-gpt-5.5-light",
   "playUrl": "https://intrepion.github.io/kata-cookie-clicker-clone-codex-openai-gpt-5.5-light/",
-  "screenshots": []
+  "screenshots": [
+    {
+      "path": "arcade/screenshots/ci-20261102-01.jpg",
+      "sha256": "a122d99b5fa8c54b1854c92aad60688a586184b6ea3e77970634200368c889ae",
+      "alt": "Cookie Clicker Clone gameplay, view 1",
+      "provenance": {
+        "kind": "ci_gameplay_capture",
+        "sourcePath": "arcade/capture-evidence/ci-20261102-01.png",
+        "sourceSha256": "5b6c09940f8b46a98a2364f792c51a9e21b124b0b0247ef6a6dd6a7fc0268530",
+        "captureCommit": "e618c934bb84b609f2348a34c4d75243fbb729d7",
+        "workflowRunId": "41392020666",
+        "inputHashes": {
+          "index.html": "4037b398bbd7d94aa68380b6f20ca61cf7f54df4487511c76b73d2d106139690",
+          "styles.css": "e208e568310afbe2f49d4c42ee9e3ace6a466fd9fd120d742b83163c107bea86",
+          "game.js": "972abe45cd03e0b311e9e76eb06da9be7ac575ffdadb15946175d9e6defda0a9"
+        },
+        "publishedFilesVerifiedAt": "2026-11-02T19:01:20Z",
+        "captureRecordPath": "arcade/capture-evidence/ci-20261102-record.json",
+        "captureRecordSha256": "7b094cb7e3f9737dbc22de81740b4cf190f74559c0b75642fafca3812affd6db"
+      }
+    },
+    {
+      "path": "arcade/screenshots/ci-20261102-02.jpg",
+      "sha256": "1f75c4c831e71dcb6633cf8a76e0d400a33c4c89ba853132b416dde327dcbb6f",
+      "alt": "Cookie Clicker Clone gameplay, view 2",
+      "provenance": {
+        "kind": "ci_gameplay_capture",
+        "sourcePath": "arcade/capture-evidence/ci-20261102-02.png",
+        "sourceSha256": "e389edad4a27947ffc0a566b8d6e47937c15e700ed21183939222b169090916b",
+        "captureCommit": "e618c934bb84b609f2348a34c4d75243fbb729d7",
+        "workflowRunId": "41392020666",
+        "inputHashes": {
+          "index.html": "4037b398bbd7d94aa68380b6f20ca61cf7f54df4487511c76b73d2d106139690",
+          "styles.css": "e208e568310afbe2f49d4c42ee9e3ace6a466fd9fd120d742b83163c107bea86",
+          "game.js": "972abe45cd03e0b311e9e76eb06da9be7ac575ffdadb15946175d9e6defda0a9"
+        },
+        "publishedFilesVerifiedAt": "2026-11-02T19:01:20Z",
+        "captureRecordPath": "arcade/capture-evidence/ci-20261102-record.json",
+        "captureRecordSha256": "7b094cb7e3f9737dbc22de81740b4cf190f74559c0b75642fafca3812affd6db"
+      }
+    }
+  ]
 }
