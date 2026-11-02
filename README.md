@@ -32,3 +32,7 @@ The complete MVP provides:
 - Medium-depth stats
 - 8-hour capped Offline Progress
 - Muted-by-default audio toggle
+
+## Arcade metadata
+
+See [docs/arcade-metadata.md](docs/arcade-metadata.md) for the game-owned manifest and screenshot provenance.
