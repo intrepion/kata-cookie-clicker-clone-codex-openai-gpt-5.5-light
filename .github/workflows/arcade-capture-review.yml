@@ -28,7 +28,7 @@ jobs:
         env:
           CAPTURE_OUTPUT: capture-output
         run: |
-          export GAME_SOURCE_COMMIT="$(git rev-parse HEAD^)"
+          export GAME_SOURCE_COMMIT="e618c934bb84b609f2348a34c4d75243fbb729d7"
           python3 -m http.server 4189 --bind 127.0.0.1 --directory capture-site > /tmp/bakery-http.log 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
